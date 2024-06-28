@@ -1,4 +1,4 @@
-name: Download and Push Device Tree
+name: Download and Extract Device Tree
 
 on:
   workflow_dispatch:
@@ -13,13 +13,6 @@ jobs:
       
     - name: Download and extract device tree
       run: |
-        wget https://download.lenovo.com/consumer/mobiles/tb_m10_fhd_rel_x605fc_s000071_190802_row.tar
-        tar --no-same-owner --no-same-permissions -xf tb_m10_fhd_rel_x605fc_s000071_190802_row.tar
+        curl -O https://download.lenovo.com/consumer/mobiles/tb_m10_fhd_rel_x605fc_s000071_190802_row.tar
+        tar --keep-old-files --no-same-owner --no-same-permissions -xf tb_m10_fhd_rel_x605fc_s000071_190802_row.tar
         rm tb_m10_fhd_rel_x605fc_s000071_190802_row.tar
-        
-    - name: Push device tree to repository
-      uses: actions-x/commit@v2
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        commit_message: Update device tree
-        file_pattern: ./*
