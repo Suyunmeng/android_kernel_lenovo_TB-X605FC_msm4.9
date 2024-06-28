@@ -1,9 +1,7 @@
 name: Download and Push Device Tree
 
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch:
 
 jobs:
   build:
@@ -16,7 +14,7 @@ jobs:
     - name: Download and extract device tree
       run: |
         wget https://download.lenovo.com/consumer/mobiles/tb_m10_fhd_rel_x605fc_s000071_190802_row.tar
-        tar -xf tb_m10_fhd_rel_x605fc_s000071_190802_row.tar
+        tar --no-same-owner --no-same-permissions -xf tb_m10_fhd_rel_x605fc_s000071_190802_row.tar
         rm tb_m10_fhd_rel_x605fc_s000071_190802_row.tar
         
     - name: Push device tree to repository
