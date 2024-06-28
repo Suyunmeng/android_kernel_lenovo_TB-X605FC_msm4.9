@@ -11,16 +11,27 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
       
+    - name: Check Git repository
+      run: |
+        if ! git rev-parse --is-inside-work-tree &> /dev/null; then
+          git init
+          git remote add origin <your-repo-url>
+        fi
+        
+    - name: Configure Git
+      run: |
+        git config --global --add safe.directory /github/workspace
+        
     - name: Download and extract device tree
       run: |
         curl -O https://download.lenovo.com/consumer/mobiles/tb_m10_fhd_rel_x605fc_s000071_190802_row.tar
         chmod 0755 tb_m10_fhd_rel_x605fc_s000071_190802_row.tar
         rsync -aAXv --delete tb_m10_fhd_rel_x605fc_s000071_190802_row.tar ~
         rm tb_m10_fhd_rel_x605fc_s000071_190802_row.tar
-
-    - name: Push device tree to repository
+        
+    - name: Commit changes
       uses: actions-x/commit@v2
       with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        commit_message: Update device tree
         file_pattern: ./*
+        commit_message: Update device tree files
+        push: true
