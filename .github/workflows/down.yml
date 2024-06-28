@@ -17,3 +17,10 @@ jobs:
         chmod 0755 tb_m10_fhd_rel_x605fc_s000071_190802_row.tar
         rsync -aAXv --delete tb_m10_fhd_rel_x605fc_s000071_190802_row.tar ~
         rm tb_m10_fhd_rel_x605fc_s000071_190802_row.tar
+
+    - name: Push device tree to repository
+      uses: actions-x/commit@v2
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        commit_message: Update device tree
+        file_pattern: ./*
